@@ -50,6 +50,7 @@ export interface UserConfiguration {
   silentMultipleInit?: boolean
   trackInteractions?: boolean
   proxyHost?: string
+  beforeSend?: (event: any) => void
 
   service?: string
   env?: string
@@ -77,6 +78,7 @@ export type Configuration = typeof DEFAULT_CONFIGURATION & {
   proxyHost?: string
 
   service?: string
+  beforeSend?: (event: any) => void
 
   isEnabled: (feature: string) => boolean
 
@@ -122,6 +124,7 @@ export function buildConfiguration(userConfiguration: UserConfiguration, buildEn
     : []
 
   const configuration: Configuration = {
+    beforeSend: userConfiguration.beforeSend,
     cookieOptions: buildCookieOptions(userConfiguration),
     isEnabled: (feature: string) => {
       return includes(enableExperimentalFeatures, feature)
